@@ -18,6 +18,7 @@ public class InvoiceServiceException extends Exception {
 	}
 
 	public InvoiceServiceException(ExceptionType type) {
+		super(type.getExceptionMessage());
 		this.type = type;
 	}
 }
