@@ -2,9 +2,11 @@ package com.capgemini.invoiceservice;
 
 import static org.junit.Assert.*;
 
+import org.checkerframework.checker.units.qual.s;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.capgemini.exception.InvoiceServiceException;
 import com.capgemini.myrides.Ride;
 
 public class InvoiceServiceTest {
@@ -37,5 +39,16 @@ public class InvoiceServiceTest {
 		Ride[] rides = { new Ride(5.0, 10), new Ride(0.3, 1), new Ride(10.0, 20) };
 		double fare = cabInvoiceService.calculateTotalFare(rides);
 		assertEquals(185.0, fare, 0.0);
+	}
+
+	@Test
+	public void givenRides_ShouldReturnInvoiceSummary() {
+		Ride[] rides = { new Ride(5.0, 10), new Ride(0.3, 1), new Ride(10.0, 20) };
+		InvoiceSummary summary;
+		try {
+			summary = cabInvoiceService.generateSummary(rides);
+			InvoiceSummary expectedSummary = new InvoiceSummary(3, 185.0);
+			assertEquals(expectedSummary, summary);
+		} catch (InvoiceServiceException e) {}
 	}
 }
