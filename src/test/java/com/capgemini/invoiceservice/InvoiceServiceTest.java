@@ -2,7 +2,9 @@ package com.capgemini.invoiceservice;
 
 import static org.junit.Assert.*;
 
-import org.checkerframework.checker.units.qual.s;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,16 +39,34 @@ public class InvoiceServiceTest {
 	@Test
 	public void givenMultipleRides_ShouldCalculateTotalFare() {
 		Ride[] rides = { new Ride(5.0, 10), new Ride(0.3, 1), new Ride(10.0, 20) };
-		double fare = cabInvoiceService.calculateTotalFare(rides);
+		List<Ride> myRides = Arrays.asList(rides);
+		double fare = cabInvoiceService.calculateTotalFare(myRides);
 		assertEquals(185.0, fare, 0.0);
 	}
 
 	@Test
 	public void givenRides_ShouldReturnInvoiceSummary() {
 		Ride[] rides = { new Ride(5.0, 10), new Ride(0.3, 1), new Ride(10.0, 20) };
+		List<Ride> myRides = Arrays.asList(rides);
 		InvoiceSummary summary;
 		try {
-			summary = cabInvoiceService.generateSummary(rides);
+			summary = cabInvoiceService.generateSummary(myRides);
+			InvoiceSummary expectedSummary = new InvoiceSummary(3, 185.0);
+			assertEquals(expectedSummary, summary);
+		} catch (InvoiceServiceException e) {}
+	}
+	
+	@Test
+	public void givenUserId_ShouldRetunTheInvoiceSummary() {
+		List<Ride> myRides = new ArrayList<Ride>();
+		myRides.add(new Ride(5.0, 10));
+		myRides.add(new Ride(0.3, 1));
+		myRides.add(new Ride(10.0, 20));
+		int id = 1;
+		cabInvoiceService.getRepoService().addUserRides(id, myRides);
+		InvoiceSummary summary;
+		try {
+			summary = cabInvoiceService.generateSummary(id);
 			InvoiceSummary expectedSummary = new InvoiceSummary(3, 185.0);
 			assertEquals(expectedSummary, summary);
 		} catch (InvoiceServiceException e) {}
