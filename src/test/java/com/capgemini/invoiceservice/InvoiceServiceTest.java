@@ -9,6 +9,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.capgemini.exception.InvoiceServiceException;
+import com.capgemini.exception.InvoiceServiceException.ExceptionType;
+import com.capgemini.exception.RepositoryException;
+import com.capgemini.exception.RepositoryException.*;
 import com.capgemini.myrides.Ride;
 
 public class InvoiceServiceTest {
@@ -69,6 +72,22 @@ public class InvoiceServiceTest {
 			summary = cabInvoiceService.generateSummary(id);
 			InvoiceSummary expectedSummary = new InvoiceSummary(3, 185.0);
 			assertEquals(expectedSummary, summary);
+		} catch (RepositoryException | InvoiceServiceException e) {}
+	}
+	
+	@Test
+	public void givenUserId_WhenNoRideAvailableForTheUser_ShouldThrowAnException() {
+		List<Ride> myRides = new ArrayList<Ride>();
+		myRides.add(new Ride(5.0, 10));
+		myRides.add(new Ride(0.3, 1));
+		myRides.add(new Ride(10.0, 20));
+		int id = 1;
+		cabInvoiceService.getRepoService().addUserRides(id, myRides);
+		InvoiceSummary summary;
+		try {
+			summary = cabInvoiceService.generateSummary(2);
+		} catch (RepositoryException e) {
+			assertEquals(RepositoryException.ExceptionType.USER_NOT_FOUND, e.type);
 		} catch (InvoiceServiceException e) {}
 	}
 }
