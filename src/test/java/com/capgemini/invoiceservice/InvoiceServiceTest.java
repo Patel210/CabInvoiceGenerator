@@ -19,6 +19,14 @@ public class InvoiceServiceTest {
 		double distance = 5.0;
 		int time = 10;
 		double fare = cabInvoiceService.calculateFare(distance, time);
-		assertEquals(60, fare, 0.0);
+		assertEquals(60.0, fare, 0.0);
+	}
+
+	@Test
+	public void givenDistanceAndTime_BelowMinimumFareThresholdCondition_ShouldReturnTheMinimumFare() {
+		double distance = 0.3;
+		int time = 1;
+		double fare = cabInvoiceService.calculateFare(distance, time);
+		assertEquals(5.0, fare, 0.0);
 	}
 }
