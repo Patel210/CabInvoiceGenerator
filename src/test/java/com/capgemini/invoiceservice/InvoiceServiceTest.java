@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.capgemini.myrides.Ride;
+
 public class InvoiceServiceTest {
 
 	CabInvoiceService cabInvoiceService;
@@ -28,5 +30,12 @@ public class InvoiceServiceTest {
 		int time = 1;
 		double fare = cabInvoiceService.calculateFare(distance, time);
 		assertEquals(5.0, fare, 0.0);
+	}
+
+	@Test
+	public void givenMultipleRides_ShouldCalculateTotalFare() {
+		Ride[] rides = { new Ride(5.0, 10), new Ride(0.3, 1), new Ride(10.0, 20) };
+		double fare = cabInvoiceService.calculateTotalFare(rides);
+		assertEquals(185.0, fare, 0.0);
 	}
 }
