@@ -1,5 +1,7 @@
 package com.capgemini.invoiceservice;
 
+import com.capgemini.exception.InvoiceServiceException;
+import com.capgemini.exception.InvoiceServiceException.ExceptionType;
 import com.capgemini.myrides.Ride;
 
 public class CabInvoiceService {
@@ -18,5 +20,13 @@ public class CabInvoiceService {
 			totalFare += calculateFare(ride.getDistance(), ride.getTime());
 		}
 		return totalFare;
+	}
+
+	public InvoiceSummary generateSummary(Ride[] rides) throws InvoiceServiceException {
+		if(rides.length == 0) {
+			throw new InvoiceServiceException(ExceptionType.NO_RIDE);
+		}
+		double totalFare = calculateTotalFare(rides);
+		return new InvoiceSummary(rides.length, totalFare);
 	}
 }
