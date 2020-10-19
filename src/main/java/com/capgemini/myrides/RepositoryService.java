@@ -1,12 +1,11 @@
 package com.capgemini.myrides;
 
-import java.util.List;
-
-import com.capgemini.exception.InvoiceServiceException;
-import com.capgemini.exception.InvoiceServiceException.ExceptionType;
+import java.util.List; 
+import com.capgemini.exception.RepositoryException;
+import com.capgemini.exception.RepositoryException.ExceptionType;
 
 public class RepositoryService {
-	
+
 	private RideRepository rideRepo;
 
 	public RepositoryService() {
@@ -17,10 +16,10 @@ public class RepositoryService {
 		rideRepo.getRideRepo().put(id, rides);
 	}
 
-	public List<Ride> getUserRides(int id) throws InvoiceServiceException {
+	public List<Ride> getUserRides(int id) throws RepositoryException {
 		List<Ride> myRides = rideRepo.getRideRepo().get(id);
-		if (myRides.size() == 0) {
-			throw new InvoiceServiceException(ExceptionType.NO_RIDE);
+		if(myRides == null) {
+			throw new RepositoryException(ExceptionType.USER_NOT_FOUND);
 		}
 		return myRides;
 	}

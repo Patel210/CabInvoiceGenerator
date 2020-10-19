@@ -1,11 +1,10 @@
 package com.capgemini.exception;
 
-public class InvoiceServiceException extends Exception {
-
+public class RepositoryException extends Exception {
 	public ExceptionType type;
-
+	
 	public enum ExceptionType {
-		NO_RIDE_TAKEN("Atleast 1 ride required for generating summary"), USER_NOT_FOUND("User not present in the repository");
+		USER_NOT_FOUND("User not present in the repository");
 
 		private String exceptionMessage;
 
@@ -16,8 +15,8 @@ public class InvoiceServiceException extends Exception {
 			return exceptionMessage;
 		}
 	}
-
-	public InvoiceServiceException(ExceptionType type) {
+	
+	public RepositoryException(ExceptionType type) {
 		super(type.getExceptionMessage());
 		this.type = type;
 	}

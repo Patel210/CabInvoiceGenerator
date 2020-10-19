@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.capgemini.exception.InvoiceServiceException;
 import com.capgemini.exception.InvoiceServiceException.ExceptionType;
+import com.capgemini.exception.RepositoryException;
 import com.capgemini.myrides.RepositoryService;
 import com.capgemini.myrides.Ride;
 
@@ -28,14 +29,17 @@ public class CabInvoiceService {
 
 	public InvoiceSummary generateSummary(List<Ride> rides) throws InvoiceServiceException {
 		if(rides.size() == 0) {
-			throw new InvoiceServiceException(ExceptionType.NO_RIDE);
+			throw new InvoiceServiceException(ExceptionType.NO_RIDE_TAKEN);
 		}
 		double totalFare = calculateTotalFare(rides);
 		return new InvoiceSummary(rides.size(), totalFare);
 	}
 	
-	public InvoiceSummary generateSummary(int id) throws InvoiceServiceException {
+	public InvoiceSummary generateSummary(int id) throws InvoiceServiceException, RepositoryException {
 		List<Ride> myRides = getRepoService().getUserRides(id);
+		if(myRides.size() == 0) {
+			throw new InvoiceServiceException(ExceptionType.NO_RIDE_TAKEN);
+		}
 		double totalFare = calculateTotalFare(myRides);
 		return new InvoiceSummary(myRides.size(), totalFare);
 	}
