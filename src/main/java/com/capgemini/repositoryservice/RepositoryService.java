@@ -1,8 +1,10 @@
-package com.capgemini.myrides;
+package com.capgemini.repositoryservice;
 
 import java.util.List; 
 import com.capgemini.exception.RepositoryException;
 import com.capgemini.exception.RepositoryException.ExceptionType;
+import com.capgemini.myride.Ride;
+import com.capgemini.repository.RideRepository;
 
 public class RepositoryService {
 
